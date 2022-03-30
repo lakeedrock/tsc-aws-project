@@ -1,12 +1,11 @@
 import { Server } from "./Server/Server";
+import "dotenv/config";
 
 class Launcher {
   // Instance variables
-  private name: string;
   private server: Server;
 
   constructor() {
-    this.name = "TSC Server";
     this.server = new Server();
   }
 
