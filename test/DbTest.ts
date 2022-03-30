@@ -1,5 +1,5 @@
-import { UserCredentialsDBAccess } from "../Server/Authorization/UserCredentialsDBAccess";
-import { AccessRight } from "../Shared/Model";
+import { UserCredentialsDBAccess } from "../src/Server/Authorization/UserCredentialsDBAccess";
+import { AccessRight } from "../src/Shared/Model";
 
 class DbTest {
   public dbAccess: UserCredentialsDBAccess = new UserCredentialsDBAccess();
