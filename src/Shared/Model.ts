@@ -10,3 +10,19 @@ export enum AccessRight {
 export interface UserCredentials extends Account {
   accessRights: AccessRight[];
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+  workingPosition: WorkingPosition;
+}
+
+export enum WorkingPosition {
+  JUNIOR,
+  PROGRAMMER,
+  ENGINEER,
+  EXPERT,
+  MANAGER,
+}
