@@ -1,28 +1,17 @@
 import { IncomingMessage, ServerResponse } from "http";
-import {
-  Account,
-  Handler,
-  HTTP_CODES,
-  HTTP_METHODS,
-  TokenGenerator,
-} from "./Model";
-import { Response } from "./Response";
+import { BaseRequestHandler } from "./BaseRequestHandler";
+import { HTTP_CODES, HTTP_METHODS, TokenGenerator } from "./Model";
 
-export class LoginHandler implements Handler {
-  private req: IncomingMessage;
-  private res: ServerResponse;
+export class LoginHandler extends BaseRequestHandler {
   private tokenGenerator: TokenGenerator;
-  private response: Response;
 
   constructor(
     req: IncomingMessage,
     res: ServerResponse,
     tokenGenerator: TokenGenerator
   ) {
-    this.req = req;
-    this.res = res;
+    super(req, res);
     this.tokenGenerator = tokenGenerator;
-    this.response = new Response();
   }
 
   public async handleRequest(): Promise<void> {
@@ -58,31 +47,5 @@ export class LoginHandler implements Handler {
       };
       this.response.createResponse(this.res, HTTP_CODES.SERVER_ERROR, data);
     }
-  }
-
-  private async handleNotFound(): Promise<void> {
-    const data = {
-      message: "Not found",
-    };
-    this.response.createResponse(this.res, HTTP_CODES.NOT_FOUND, data);
-  }
-
-  private async getRequestBody(): Promise<Account> {
-    return new Promise((resolve, reject) => {
-      let body = "";
-      this.req.on("data", (data: string) => {
-        body += data;
-      });
-      this.req.on("end", () => {
-        try {
-          resolve(JSON.parse(body));
-        } catch (error: any) {
-          reject(error);
-        }
-      });
-      this.req.on("error", (error: any) => {
-        reject(error);
-      });
-    });
   }
 }
