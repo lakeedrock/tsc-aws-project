@@ -31,3 +31,18 @@ export enum HTTP_METHODS {
   PUT = "PUT",
   DELETE = "DELETE",
 }
+
+export interface TokenValidator {
+  validateToken(tokenId: string): Promise<TokenRights>;
+}
+
+export interface TokenRights {
+  accessRights: AccessRight[];
+  state: TokenState;
+}
+
+export enum TokenState {
+  VALID,
+  INVALID,
+  EXPIRED,
+}

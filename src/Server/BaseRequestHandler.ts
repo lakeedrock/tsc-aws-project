@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { Account, HTTP_CODES } from "./Model";
-import { Response } from "./Response";
 
 export abstract class BaseRequestHandler {
   protected req: IncomingMessage;
@@ -19,7 +18,7 @@ export abstract class BaseRequestHandler {
     const data = {
       message: "Not found",
     };
-    this.response.createResponse(this.res, HTTP_CODES.NOT_FOUND, data);
+    this.createJSONResponse(this.res, HTTP_CODES.NOT_FOUND, data);
   }
 
   protected async getRequestBody(): Promise<Account> {
@@ -39,5 +38,18 @@ export abstract class BaseRequestHandler {
         reject(error);
       });
     });
+  }
+
+  protected createJSONResponse(
+    res: ServerResponse,
+    statusCode: HTTP_CODES,
+    data: Object
+  ): ServerResponse {
+    res.statusCode = statusCode;
+    res.writeHead(statusCode, {
+      "Content-Type": "application.json",
+    });
+    res.write(JSON.stringify(data));
+    return res;
   }
 }

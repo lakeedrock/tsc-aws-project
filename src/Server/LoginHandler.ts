@@ -30,22 +30,18 @@ export class LoginHandler extends BaseRequestHandler {
       const body = await this.getRequestBody();
       const sessionToken = await this.tokenGenerator.generateToken(body);
       if (sessionToken) {
-        this.response.createResponse(
-          this.res,
-          HTTP_CODES.CREATED,
-          sessionToken
-        );
+        this.createJSONResponse(this.res, HTTP_CODES.CREATED, sessionToken);
       } else {
         const data = {
           message: "Invalid username or password",
         };
-        this.response.createResponse(this.res, HTTP_CODES.NOT_FOUND, data);
+        this.createJSONResponse(this.res, HTTP_CODES.NOT_FOUND, data);
       }
     } catch (error: any) {
       const data = {
         error: error.message,
       };
-      this.response.createResponse(this.res, HTTP_CODES.SERVER_ERROR, data);
+      this.createJSONResponse(this.res, HTTP_CODES.SERVER_ERROR, data);
     }
   }
 }
